@@ -356,10 +356,10 @@ app.post("/api/trigger-popup", async (req, res) => {
       direction: direction || "inbound",
       caller: {
         callId: callId,
-        number: caller.number,
+        number: caller?.number,
         name: caller.name || "Unknown",
         source: "client",
-        email: ExtensionEmail || "",
+        email: caller?.email || "",
         timestamp: timestamp || new Date().toISOString(),
         queue,
         language,
@@ -723,6 +723,26 @@ function handleCallAction(data, ws) {
   // Log the action
   console.log(`📝 Action: ${data.action} for call ${data.callId}`);
 }
+
+// ============== ROOT ENDPOINT ==============
+app.get("/", (req, res) => {
+  res.json({
+    message: "🚀 CTI Server is running!",
+    status: "online",
+    health: "/health",
+    test: "/api/test",
+    endpoints: [
+      { method: "GET", path: "/health", desc: "Health check" },
+      { method: "GET", path: "/api/test", desc: "Test API & sample payloads" },
+      { method: "GET", path: "/api/status", desc: "Server status" },
+      { method: "GET", path: "/api/extension-emails", desc: "Today's extensions" },
+      { method: "POST", path: "/api/trigger-popup", desc: "Trigger CTI popup" },
+      { method: "POST", path: "/api/update-call-duration", desc: "Update call duration" },
+      { method: "POST", path: "/api/extensions", desc: "Register extension" },
+      { method: "POST", path: "/api/simulate-call", desc: "Simulate call" },
+    ],
+  });
+});
 
 // ============== HEALTH CHECK ==============
 app.get("/health", (req, res) => {
