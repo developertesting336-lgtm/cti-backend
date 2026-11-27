@@ -392,11 +392,11 @@ app.post("/api/trigger-popup", async (req, res) => {
 
 app.get("/api/extension-emails", async (req, res) => {
   try {
-    // 🔹 Get today's start time (00:00:00)
+    // Get today's start time (00:00:00)
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
 
-    // 🔹 Get today's end time (23:59:59)
+    // Get today's end time (23:59:59)
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -406,7 +406,7 @@ app.get("/api/extension-emails", async (req, res) => {
         $lte: endOfDay,
       },
     })
-      .select("extension email createdAt updatedAt")
+      .select("extension email")
       .sort({ createdAt: -1 });
 
     res.status(200).json({
