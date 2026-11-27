@@ -356,10 +356,11 @@ app.post("/api/trigger-popup", async (req, res) => {
       direction: direction || "inbound",
       caller: {
         callId: callId,
-        number: caller?.number,
+        number: caller.number,
         name: caller.name || "Unknown",
         source: "client",
-        email: caller?.email || "",
+        caller_email: caller?.email,
+        email: ExtensionEmail || "",
         timestamp: timestamp || new Date().toISOString(),
         queue,
         language,
